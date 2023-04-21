@@ -1,11 +1,13 @@
 package model;
 
-public class Member  {
-   private String nameMember;
-   private int age;
-   private String address;
-   private Account account;
+import controller.ManageSignIn;
 
+import java.util.Scanner;
+
+public class Member  {
+    Scanner scanner = new Scanner(System.in);
    public Member() {
    }
+
+
 }

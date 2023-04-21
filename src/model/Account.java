@@ -3,11 +3,46 @@ package model;
 public  class Account {
     private String id;
     private String password;
-    private String accessLevel;
+    private String accessLevel="user";
     private String name;
     private int age;
     private String address;
+    private int tuition = 0;
+    private boolean java;
+    private boolean c;
+    private boolean tester;
 
+    public boolean isJava() {
+        return java;
+    }
+
+    public void setJava(boolean java) {
+        this.java = java;
+    }
+
+    public boolean isC() {
+        return c;
+    }
+
+    public void setC(boolean c) {
+        this.c = c;
+    }
+
+    public boolean isTester() {
+        return tester;
+    }
+
+    public void setTester(boolean tester) {
+        this.tester = tester;
+    }
+
+    public int getTuition() {
+        return tuition;
+    }
+
+    public void setTuition(int tuition) {
+        this.tuition += tuition;
+    }
 
     public String getName() {
         return name;
