@@ -18,7 +18,7 @@ public class ManageSignIn {
         this.signInList = signInList;
     }
 
-    public ManageSignIn() {
+    private ManageSignIn() {
         signInList = new ArrayList<>();
         signInList.add(new Account("Amin","Amin"));
     }
@@ -26,6 +26,20 @@ public class ManageSignIn {
     public static ManageSignIn getManageSignIn(){
         if (manageSignIn == null) manageSignIn = new ManageSignIn();
         return manageSignIn;
+    }
+    public void forgetPassword(){
+        System.out.println("Enter your id name:");
+        String id = scanner.nextLine();
+        for (Account account : signInList) {
+            if (account.getId().equals(id)){
+                System.out.println("Enter your number phone: ");
+                String numberPhone = scanner.nextLine();
+                if (account.getNumberPhone().equals(numberPhone)){
+                    System.out.println(account.getNumberPhone());
+                }
+            }
+        }
+        System.out.println("Not found id: ");
     }
     public void signUp() {
         Account signUp = new Account();
@@ -35,7 +49,7 @@ public class ManageSignIn {
             signUp.setId(scanner.nextLine());
             for (Account account : signInList) {
                 if (signUp.getId().equals(account.getId())) {
-                    System.out.println("vui long nhap lai:");
+                    System.out.println("Please enter again:");
                     isValidUsername = false;
                     break;
                 }else {
@@ -55,7 +69,11 @@ public class ManageSignIn {
         String password = scanner.nextLine();
         int index;
         for (Account account : signInList) {
-            if (account.getId().equals(username) && account.getPassword().equals(password)){
+            if (account.getId().equals(username) && !account.getPassword().equals(password)){
+                account.setCountLogin(account.getCountLogin()+1);
+            }
+            if (account.getId().equals(username) && account.getPassword().equals(password) && account.getCountLogin()<4){
+                account.setCountLogin(0);
                 if(account.getName()==null){
                     System.out.println("Enter your name:");
                     account.setName(scanner.nextLine());
@@ -63,6 +81,9 @@ public class ManageSignIn {
                     account.setAddress(scanner.nextLine());
                     System.out.println("Enter your age:");
                     account.setAge(scanner.nextInt());
+                    scanner.nextLine();
+                    System.out.println("Enter your number phone: ");
+                    account.setNumberPhone(scanner.nextLine());
                 }
                 index = signInList.indexOf(account);
                 boolean running = true;
@@ -115,7 +136,7 @@ public class ManageSignIn {
                     return;
                 }
             }
-            System.out.println("Id not found:");
+            System.out.println("Not found id:");
         }
         }
         public void displayInformation(){

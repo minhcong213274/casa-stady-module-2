@@ -4,11 +4,12 @@ package controller;
 public class Admin  {
     private final String ID_ADMIN = "ADMIN";
     private final String PASSWORD = "ADMIN";
+    ManageSignIn manageSignIn = ManageSignIn.getManageSignIn();
 
     public Admin() {
     }
 
     public void removeAccount(){
-        //todo
+        System.out.println("Enter name id: ");
     }
 }
