@@ -77,7 +77,7 @@ public  class Account {
     }
 
     public Account(String id, String password) {
-        accessLevel = "Menber";
+        accessLevel = "Member";
         this.id = id;
         this.password = password;
     }

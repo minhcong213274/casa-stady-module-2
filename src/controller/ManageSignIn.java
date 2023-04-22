@@ -1,8 +1,6 @@
 package controller;
 
 import model.Account;
-import model.Member;
-import view.StudentManagement;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,7 +72,7 @@ public class ManageSignIn {
                     System.out.println("1. Display information.");
                     System.out.println("2. Sign up course.");
                     System.out.println("3. Change password.");
-                    System.out.println("4.Kick member. ");
+                    System.out.println("4.Delete account member. ");
                     System.out.println("-----------------------------------");
                     System.out.print("Option: ");
 
@@ -91,6 +89,9 @@ public class ManageSignIn {
                             changePassword(index);
                             break;
                         case "4":
+                            deleteAccountMember(index);
+                            break;
+                        case "5":
                             return;
                         default:
                             System.out.println("Invalid option. Please try again.");
@@ -104,13 +105,28 @@ public class ManageSignIn {
         System.out.println("This account is Invalid. ");
         return;
         }
+        public void deleteAccountMember(int index){
+        if (signInList.get(index).getAccessLevel().equals("Mod")){
+            System.out.println("Enter id you want delete:");
+            String id = scanner.nextLine();
+            for (Account account : signInList) {
+                if (account.getId().equals(id) && account.getAccessLevel().equals("Member")){
+                    signInList.remove(account);
+                    return;
+                }
+            }
+            System.out.println("Id not found:");
+        }
+        }
         public void displayInformation(){
             for (Account account : signInList) {
-                if (account.getAccessLevel().equals("user"))
+                if (account.getAccessLevel().equals("Member")){
                     System.out.println(account.getId()+account.getName()+account.getAge()+account.getAddress()+account.getTuition());
+                }
             }
         }
         public void changePassword(int index){
+            System.out.println("Enter new password ");
         signInList.get(index).setPassword(scanner.nextLine());
         }
     public void signUpCourse(int index){
