@@ -34,6 +34,9 @@ public class Main {
                    manageSignIn.forgetPassword();
                     break;
                 case "4":
+                    manageSignIn.supportAccount();
+                    break;
+                case "5":
                     return;
                 default:
                     System.out.println("Invalid option. Please try again.");

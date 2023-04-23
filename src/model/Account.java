@@ -1,9 +1,11 @@
 package model;
 
-public  class Account {
+import java.io.Serializable;
+
+public  class Account implements Serializable {
     private String id;
     private String password;
-    private String accessLevel="Member";
+    private String accessLevel="member";
     private String name;
     private int age;
     private String address;
@@ -51,7 +53,7 @@ public  class Account {
     }
 
     public void setTuition(int tuition) {
-        this.tuition += tuition;
+        this.tuition = tuition;
     }
 
     public String getNumberPhone() {
