@@ -5,8 +5,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ReadFile<T> {
-    public  <T> List<T> ReadFile(){
-        File file = new File("manager.txt");
+    private ReadFile(){}
+    private static ReadFile readFile = null;
+    public static ReadFile getReadFile(){
+        if (readFile == null){
+            readFile = new ReadFile();
+        }return readFile;
+    }
+    public  <T> List<T> readFile(){
+        File file = new File("manage.txt");
         List<T> element = new ArrayList<>();
         try(InputStream inputStream = new FileInputStream(file);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);

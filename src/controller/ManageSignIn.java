@@ -1,12 +1,16 @@
 package controller;
 
 import model.Account;
+import storage.ReadFile;
+import storage.WriteFile;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class ManageSignIn {
+    private ReadFile<Account> readFile = ReadFile.getReadFile();
+    private WriteFile<Account> writeFile = WriteFile.getWriteFile();
     private List<Account> signInList;
     private List<Account> lockUpAccount;
     Scanner scanner = new Scanner(System.in);
@@ -24,6 +28,7 @@ public class ManageSignIn {
         signInList = new ArrayList<>();
         signInList.add(new Account("ADMIN","ADMIN"));
         signInList.get(0).setAccessLevel("");
+        signInList=readFile.readFile();
     }
     private static ManageSignIn manageSignIn = null;
     public static ManageSignIn getManageSignIn(){
@@ -38,7 +43,10 @@ public class ManageSignIn {
                 System.out.println("Enter your number phone: ");
                 String numberPhone = scanner.nextLine();
                 if (account.getNumberPhone().equals(numberPhone)){
-                    System.out.println(account.getNumberPhone());
+                    System.out.println("Your password: ");
+                    System.out.println(account.getPassword());
+                    writeFile.writeFile(signInList);
+                    return;
                 }
             }
         }
@@ -63,6 +71,7 @@ public class ManageSignIn {
         System.out.println("Enter password");
         signUp.setPassword(scanner.nextLine());
         signInList.add(signUp);
+        writeFile.writeFile(signInList);
     }
     public void login() {
         System.out.print("Username: ");
@@ -74,17 +83,15 @@ public class ManageSignIn {
         for (Account account : signInList) {
             if (account.getId().equals(username) && !account.getPassword().equals(password)){
                 account.setCountLogin(account.getCountLogin()+1);
+                writeFile.writeFile(signInList);
             }
-            if (account.getCountLogin()==2 && !account.getId().equals("ADMIN")){
-                System.out.println("Entering the wrong again will be locked account.");
-                return;
-            }
-            if (account.getCountLogin()>2 && !account.getId().equals("ADMIN")){
+            if (account.getId().equals(username) && account.getCountLogin()>2 && !account.getId().equals("ADMIN")){
                 System.out.println("The locked account need contact the admin for help.");
                 return;
             }
             if (account.getId().equals(username) && account.getPassword().equals(password) && account.getCountLogin()<4 && account.getAccessLevel().equals("member")){
                 account.setCountLogin(0);
+                writeFile.writeFile(signInList);
                 if(account.getName()==null){
                     System.out.println("Enter your name:");
                     account.setName(scanner.nextLine());
@@ -95,6 +102,7 @@ public class ManageSignIn {
                     scanner.nextLine();
                     System.out.println("Enter your number phone: ");
                     account.setNumberPhone(scanner.nextLine());
+                    writeFile.writeFile(signInList);
                 }
                 index = signInList.indexOf(account);
                 boolean running = true;
@@ -132,6 +140,7 @@ public class ManageSignIn {
             }
             if (account.getId().equals(username) && account.getPassword().equals(password) && account.getCountLogin()<4 && account.getAccessLevel().equals("mod")){
                 account.setCountLogin(0);
+                writeFile.writeFile(signInList);
                 if(account.getName()==null){
                     System.out.println("Enter your name:");
                     account.setName(scanner.nextLine());
@@ -142,6 +151,7 @@ public class ManageSignIn {
                     scanner.nextLine();
                     System.out.println("Enter your number phone: ");
                     account.setNumberPhone(scanner.nextLine());
+                    writeFile.writeFile(signInList);
                 }
                 index = signInList.indexOf(account);
                 boolean running = true;
@@ -152,6 +162,7 @@ public class ManageSignIn {
                     System.out.println("2. Sign up course.");
                     System.out.println("3. Change password.");
                     System.out.println("4.Delete account member. ");
+                    System.out.println("5.Exit. ");
                     System.out.println("-----------------------------------");
                     System.out.print("Option: ");
 
@@ -176,7 +187,6 @@ public class ManageSignIn {
                             System.out.println("Invalid option. Please try again.");
                             break;
                     }
-
                     System.out.println();
                 }
             }
@@ -189,6 +199,7 @@ public class ManageSignIn {
                     System.out.println("2. Change level.");
                     System.out.println("3. Unlock account.");
                     System.out.println("4.Delete account member. ");
+                    System.out.println("5.Exit. ");
                     System.out.println("-----------------------------------");
                     System.out.print("Option: ");
 
@@ -216,6 +227,8 @@ public class ManageSignIn {
 
                     System.out.println();
                 }
+            }if (account.getId().equals(username) && account.getCountLogin()==2 && !account.getId().equals("ADMIN")){
+                System.out.println("Entering the wrong again will be locked account.");
             }
         }
         System.out.println("This account is Invalid. ");
@@ -230,6 +243,7 @@ public class ManageSignIn {
             for (Account account : signInList) {
                 if (account.getId().equals(id)){
                     account.setCountLogin(0);
+                    writeFile.writeFile(signInList);
                 }
             }
         }
@@ -241,17 +255,23 @@ public class ManageSignIn {
                     System.out.println("Enter level account: ");
                     String accessLevel = scanner.nextLine();
                     account.setAccessLevel(accessLevel);
+                    System.out.println("Change success.");
+                    writeFile.writeFile(signInList);
+                    return;
                 }
             }
             System.out.println("Not found id");
         }
         public void payMoney(int index){
-            System.out.println("Tuition is: "+signInList.get(index).getTuition());
-            System.out.println("Enter your money: ");
-            int money = scanner.nextInt();
-            scanner.nextLine();
-            signInList.get(index).setTuition(signInList.get(index).getTuition()-money);
-            signInList.get(0).setTuition(signInList.get(0).getTuition()+money);
+            System.out.println("Tuition is: " + signInList.get(index).getTuition());
+            if (signInList.get(index).getTuition()>0){
+                System.out.println("Enter your money: ");
+                int money = scanner.nextInt();
+                scanner.nextLine();
+                signInList.get(index).setTuition(signInList.get(index).getTuition()-money);
+                signInList.get(0).setTuition(signInList.get(0).getTuition()+money);
+                writeFile.writeFile(signInList);
+            }
         }
         public void supportAccount(){
             System.out.println("Enter name id: ");
@@ -260,6 +280,7 @@ public class ManageSignIn {
                 if (account.getId().equals(id)){
                     lockUpAccount.add(account);
                     System.out.println("Please wait for admin to unlock: ");
+                    writeFile.writeFile(signInList);
                 }
             }
         }
@@ -270,6 +291,7 @@ public class ManageSignIn {
             for (Account account : signInList) {
                 if (account.getId().equals(id) && account.getAccessLevel().equals("member")){
                     signInList.remove(account);
+                    writeFile.writeFile(signInList);
                     return;
                 }
             }
@@ -280,6 +302,7 @@ public class ManageSignIn {
                 for (Account account : signInList) {
                     if (account.getId().equals(id) && !account.getId().equals("ADMIN")){
                         signInList.remove(account);
+                        writeFile.writeFile(signInList);
                         return;
                     }
                 }
@@ -290,12 +313,15 @@ public class ManageSignIn {
             for (Account account : signInList) {
                 if (account.getAccessLevel().equals("member")){
                     System.out.println("Name" + account.getName()+" Tuition "+account.getTuition());
+                    return;
                 }
             }
+            System.out.println("No members");
         }
         public void changePassword(int index){
             System.out.println("Enter new password ");
         signInList.get(index).setPassword(scanner.nextLine());
+            writeFile.writeFile(signInList);
         }
     public void signUpCourse(int index){
         boolean running = true;
@@ -313,15 +339,12 @@ public class ManageSignIn {
             switch (choice) {
                 case "1":
                     signUpJava(index);
-                    System.out.println("Sign Up Success.");
                     break;
                 case "2":
                     signUpC(index);
-                    System.out.println("Sign Up Success.");
                     break;
                 case "3":
                     signUpTester(index);
-                    System.out.println("Sign Up Success.");
                     break;
                 case "4":
                     return;
@@ -338,6 +361,7 @@ public class ManageSignIn {
             signInList.get(index).setJava(true);
             signInList.get(index).setTuition(signInList.get(index).getTuition()+300);
             System.out.println("Sign Up Success");
+            writeFile.writeFile(signInList);
         }else {
             System.out.println("Registration failed");
         }
@@ -347,6 +371,7 @@ public class ManageSignIn {
             signInList.get(index).setC(true);
             signInList.get(index).setTuition(signInList.get(index).getTuition()+250);
             System.out.println("Sign Up Success");
+            writeFile.writeFile(signInList);
         }else {
             System.out.println("Registration failed");
         }
@@ -357,6 +382,7 @@ public class ManageSignIn {
             signInList.get(index).setTester(true);
             signInList.get(index).setTuition(signInList.get(index).getTuition()+500);
             System.out.println("Sign Up Success");
+            writeFile.writeFile(signInList);
         }else {
             System.out.println("Registration failed");
         }
