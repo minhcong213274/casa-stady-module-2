@@ -119,20 +119,13 @@ public class ManageSignIn {
                     String choice = scanner.nextLine();
 
                     switch (choice) {
-                        case "1":
-                            payMoney(index);
-                            break;
-                        case "2":
-                            signUpCourse(index);
-                            break;
-                        case "3":
-                            changePassword(index);
-                            break;
-                        case "4":
+                        case "1" -> payMoney(index);
+                        case "2" -> signUpCourse(index);
+                        case "3" -> changePassword(index);
+                        case "4" -> {
                             return;
-                        default:
-                            System.out.println("Invalid option. Please try again.");
-                            break;
+                        }
+                        default -> System.out.println("Invalid option. Please try again.");
                     }
 
                     System.out.println();
@@ -159,7 +152,7 @@ public class ManageSignIn {
                     System.out.println("---- Member Management System ----");
                     System.out.println("Please choose an option:");
                     System.out.println("1. Display information.");
-                    System.out.println("2. Sign up course.");
+                    System.out.println("2.Member sign up course.");
                     System.out.println("3. Change password.");
                     System.out.println("4.Delete account member. ");
                     System.out.println("5.Exit. ");
@@ -169,23 +162,14 @@ public class ManageSignIn {
                     String choice = scanner.nextLine();
 
                     switch (choice) {
-                        case "1":
-                            displayInformation();
-                            break;
-                        case "2":
-                            signUpCourse(index);
-                            break;
-                        case "3":
-                            changePassword(index);
-                            break;
-                        case "4":
-                            deleteAccountMember(index);
-                            break;
-                        case "5":
+                        case "1" -> displayInformation();
+                        case "2" -> displaySignUP();
+                        case "3" -> changePassword(index);
+                        case "4" -> deleteAccountMember(index);
+                        case "5" -> {
                             return;
-                        default:
-                            System.out.println("Invalid option. Please try again.");
-                            break;
+                        }
+                        default -> System.out.println("Invalid option. Please try again.");
                     }
                     System.out.println();
                 }
@@ -206,23 +190,14 @@ public class ManageSignIn {
                     String choice = scanner.nextLine();
 
                     switch (choice) {
-                        case "1":
-                            System.out.println("Total tuition is: "+account.getTuition());
-                            break;
-                        case "2":
-                            changeLevel();
-                            break;
-                        case "3":
-                            unlockAccount();
-                            break;
-                        case "4":
-                            deleteAccountMember(0);
-                            break;
-                        case "5":
+                        case "1" -> System.out.println("Total tuition is: " + account.getTuition());
+                        case "2" -> changeLevel();
+                        case "3" -> unlockAccount();
+                        case "4" -> deleteAccountMember(0);
+                        case "5" -> {
                             return;
-                        default:
-                            System.out.println("Invalid option. Please try again.");
-                            break;
+                        }
+                        default -> System.out.println("Invalid option. Please try again.");
                     }
 
                     System.out.println();
@@ -244,6 +219,14 @@ public class ManageSignIn {
                 if (account.getId().equals(id)){
                     account.setCountLogin(0);
                     writeFile.writeFile(signInList);
+                }
+            }
+        }
+        public void displaySignUP(){
+            System.out.println("List member sign up: ");
+            for (Account account : signInList) {
+                if (account.getAccessLevel().equals("member")){
+                    System.out.println("Java : "+account.isJava()+" C: "+account.isC()+" Tester : "+account.isTester());
                 }
             }
         }
@@ -312,7 +295,7 @@ public class ManageSignIn {
         public void displayInformation(){
             for (Account account : signInList) {
                 if (account.getAccessLevel().equals("member")){
-                    System.out.println("Name" + account.getName()+" Tuition "+account.getTuition());
+                    System.out.println("Name " + account.getName() + " Tuition "+account.getTuition());
                     return;
                 }
             }
