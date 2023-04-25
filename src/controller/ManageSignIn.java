@@ -151,7 +151,7 @@ public class ManageSignIn {
                 while (running) {
                     System.out.println("---- Member Management System ----");
                     System.out.println("Please choose an option:");
-                    System.out.println("1. Display information.");
+                    System.out.println("1.Mark student : ");
                     System.out.println("2.Member sign up course.");
                     System.out.println("3. Change password.");
                     System.out.println("4.Delete account member. ");
@@ -162,7 +162,7 @@ public class ManageSignIn {
                     String choice = scanner.nextLine();
 
                     switch (choice) {
-                        case "1" -> displayInformation();
+                        case "1" -> markStudent();
                         case "2" -> displaySignUP();
                         case "3" -> changePassword(index);
                         case "4" -> deleteAccountMember(index);
@@ -183,7 +183,8 @@ public class ManageSignIn {
                     System.out.println("2. Change level.");
                     System.out.println("3. Unlock account.");
                     System.out.println("4.Delete account member. ");
-                    System.out.println("5.Exit. ");
+                    System.out.println("5.Mark student : ");
+                    System.out.println("6.Exit. ");
                     System.out.println("-----------------------------------");
                     System.out.print("Option: ");
 
@@ -194,7 +195,8 @@ public class ManageSignIn {
                         case "2" -> changeLevel();
                         case "3" -> unlockAccount();
                         case "4" -> deleteAccountMember(0);
-                        case "5" -> {
+                        case "5" -> markStudent();
+                        case "6" -> {
                             return;
                         }
                         default -> System.out.println("Invalid option. Please try again.");
@@ -207,6 +209,40 @@ public class ManageSignIn {
             }
         }
         System.out.println("This account is Invalid. ");
+        }
+        public void markStudent(){
+            for (Account account : signInList) {
+                if (account.getAccessLevel().equals("member")){
+
+                    if (account.isJava()){
+                        System.out.println(account.getName());
+                        System.out.println("Enter score java: ");
+                        account.setScoreJava(scanner.nextDouble());
+                        updateScore(account);
+                    }if (account.isC()){
+                        System.out.println(account.getName());
+                        System.out.println("Enter score C: ");
+                        account.setScoreC(scanner.nextDouble());
+                        updateScore(account);
+                    }if (account.isTester()){
+                        System.out.println(account.getName());
+                        System.out.println("Enter score tester: ");
+                        account.setScoreTester(scanner.nextDouble());
+                        updateScore(account);
+                    }
+                }
+            }
+        }
+        public void updateScore(Account account){
+        if (account.getScoreJava()<5){
+            account.setJava(false);
+        }
+        if (account.getScoreC()<5){
+            account.setC(false);
+            }
+        if (account.getScoreTester()<5){
+            account.setTester(false);
+        }
         }
         public void unlockAccount(){
             System.out.println("The ID is locked: ");

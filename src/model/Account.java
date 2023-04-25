@@ -15,6 +15,33 @@ public  class Account implements Serializable {
     private boolean c;
     private boolean tester;
     private int countLogin = 0;
+    private double scoreJava;
+    private double scoreC;
+    private double scoreTester;
+
+    public double getScoreJava() {
+        return scoreJava;
+    }
+
+    public void setScoreJava(double scoreJava) {
+        this.scoreJava = scoreJava;
+    }
+
+    public double getScoreC() {
+        return scoreC;
+    }
+
+    public void setScoreC(double scoreC) {
+        this.scoreC = scoreC;
+    }
+
+    public double getScoreTester() {
+        return scoreTester;
+    }
+
+    public void setScoreTester(double scoreTester) {
+        this.scoreTester = scoreTester;
+    }
 
     public int getCountLogin() {
         return countLogin;
